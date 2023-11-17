@@ -1,6 +1,6 @@
 ﻿// test1.cpp : 此文件包含 "main" 函数。程序执行将在此处开始并结束。
-//
-
+//time时间系统头文件的包含
+#include<ctime>
 #include <iostream>
 using namespace std;
 int main()
@@ -12,30 +12,47 @@ int main()
     cin >> score;
     cout << "您打的分数为" << score << endl;
     //根据用户输入的分数来提示用户最后的结果
-    switch (score)
+
+    int num = 0;
+    //while括号内写循环结束条件
+   /* while (num < 10)
     {
-    case 10:
-        cout << "您认为经典电影" << endl;
-        break;
-    case 9:
-        cout << "经典" << endl;
-        break;
-    case 8:
-        cout << "非常好" << endl;
-        break;
-    case 7:
-        cout << "非常好" << endl;
-        break;
-    case 6:
-        cout << "一般" << endl; 
-        break;
-    case 5:
-        cout << "一般" << endl;
-        break;
-    default:
-        cout << "一般" << endl;
-        break;
+        num++;
+        cout << num << endl;
+    }*/
+    //系统随机生成1-100 ，提示猜大了还是小了，猜对了提示胜利
+    // 添加随机数种子，利用时间生成随机数
+    srand((unsigned int)time(NULL));
+
+    //系统生成随机数
+    num = rand() % 100+1;
+   // cout << num << endl;
+    //玩家猜测
+    int val = 0;
+    cout << "请输入猜测数字" << endl;
+    int i = 0;
+    while (i<5)
+    {
+        cin >> val;
+        i++;
+        if (val > num)
+        {
+            cout << "猜测过大" << endl;
+
+        }
+        else if (val < num)
+        {
+            cout << "猜测过小" << endl;
+        }
+        else
+        {
+            cout << "恭喜猜对了" << endl;
+            break;
+        }
+
     }
+    
+   
     
 }
 
