@@ -3,103 +3,114 @@
 
 #include <iostream>
 using namespace std;
+#include <string>
+//创建学生数据类型，学生包括（姓名，年龄，分数）
+
+//自定义数据类型，一些类型集合组成的一些类型
+
+struct Student
+{
+	//成员列表
+
+	//姓名
+	string name;
+
+
+	//年龄
+	int age;
+
+	//分数
+	int score;
 
 
 
+}s3;
+struct Teacher 
+{
+	int id;//5教师编号
+	string name;//教师姓名
+	int age;//教师年龄
+	struct Student stu;
 
+};
+
+//2通过学生类型创建具体学生
+
+//2.1struct student s1
+//2.2struct student s2 ={}
 int main()
 {
-	//int a = 100;
-	//int  b = 300;
+	//1结构体的基本概念
+	//2定义方式1
 
-	//swap(a, b);
+	struct Student s1;
+	s1.name = "张三";
+	s1.age = 19;
+	s1.score = 100;
+	cout << "姓名" << s1.name << "年龄" << s1.age << "fenshu" << s1.score << endl;
+
+	//定义方式2
+	struct Student s2 = {"no4",19,90};
+	cout << "姓名" << s2.name << "年龄" << s2.age << "fenshu" << s2.score << endl;
+	//定义结构体时候顺便创建结构体变量,少用
+
+	s3.name = "no5";
+	s3.age = 19;
+	s3.score = 30;
+
+	
+	//3.1创建结构体数组
+	struct Student stuArray[3] =
+	{
+		{"张三",19,399},
+		{"李四",39,340},
+		{"王五",29,899}
+	};
+	//3.2给结构体数组中的元素赋值
+
+	stuArray[2].name = "赵六";
+	stuArray[2].age = 80;
+	stuArray[2].score = 90;
+
+	//3.3遍历结构体数组
+	for (int i = 0; i < 3; i++)
+	{
+		cout << "姓名" << stuArray[i].name << stuArray[i].age << stuArray[i].score << endl;
+
+	}
+
+	//4结构体指针，利用指针访问结构体成员
+	//4.1创建结构体（已有
+	//4.2创建学生结构体变量
+	struct Student s =
+	{
+		"zhangsan ",19,399
+	};
 
 
-	////定义指针
-	//int c = 10;
-	////指针定义的语法，数据类*指针变量名
-	//int* p;
-	//p = &c;
-	//cout << "c的地址为" << &c << endl;
-	//cout << "指针p为" << p << endl;
-
-	////使用指针
-	////使用解引用的方式来找到指针指向的内存
-	//cout << "p指向的内存为" << *p << endl;
-
-
-	////指针所占的内存空间
-	//int d = 10;
-	//int* q = &d;
-	//cout << "sizeof int*" << sizeof(int*) << endl;
-	//cout << "sizeof double*" << sizeof(double*) << endl;
-	//cout << "sizeof char*" << sizeof(char*) << endl;
-	//cout << "sizeof float*" << sizeof(float*) << endl;
-	//cout << "sizeof int*" << sizeof(q) << endl;
-
-	//32位操作系统，四个字节
-	//64位操作系统，占八个字节
-
-
-	//空指针和野指针
-	//1const修饰指针，指针指向可以改，指针指向的常量不能改
-	//int a = 10;
-	//int  b = 20;
-	//const int* p = &a;
-	//p = &b;
-	////2const修饰常量
-	//int* const p2 = &a;//指针指向不可以改，指针指向的值可以改
-	//*p2 = 100;
-	////3const修饰指针和常量,都不可以改
-	//const int* const p3 = &a;
-
-	////利用指针访问数组中元素
-	//int arr[] = { 1,2,3,4,5,6,7,8,9,10 };
-	//int* p5 = arr;
-	//cout << "第一个元素" << arr[0] << endl;
-	//cout << "指针访问第二个元素" << *p5 << endl;
-	//for (int i = 0; i < 10; i++)
-	//{
-	//	cout << *p5 << endl;
-	//	p5++;
-	//}
-
-	//用冒泡排序的方式排序一个数组
-	//定义一个数组
-	int arr[] = { 1,2,5,3,8,4,9 };
-	//声明函数
-	void bubblesort(int *arr, int len);
-	void arrayPrint(int *arr, int len);
-	//数组长度
-	int len = sizeof(arr) / sizeof(arr[0]);
-	//调用函数
-	bubblesort(arr, len);
-	arrayPrint(arr, len);
+	//4.3通过指针指向结构体变量
+	struct  Student* p = &s;//利用指针指向结构体变量的地址
 	
 
 
-}
-//冒泡排序的函数
-void bubblesort(int *arr, int len)
-{
-	for (int i = 0; i < len - 1; i++)
-	{
-		for (int j = 0; j < len-i-1; j++)
-		{
-			if (arr[j] > arr[j + 1])
-			{
-				int temp = arr[j];
-				arr[j] = arr[j + 1];
-				arr[j + 1] = temp;
-			}
-		}
-	}
-}
-//数组打印函数
-void arrayPrint(int* arr, int len)
-{
-	for (int i = 0; i < len; i++)
-	{
-		cout << arr[i] << endl;
-	}
+	//4.4通过指针访问结构体变量中的数据
+	//通过结构体指针访问结构体中的属性，需要利用“  ->  ”
+	cout << "name:  "<<p->name << "age:"<<p->age <<"fenshu "<< p->score << endl;
+
+	//5结构体嵌套结构体
+	Teacher teacher1;
+	teacher1.age = 1000;
+	teacher1.id = 1234;
+	teacher1.name = "laowang";
+
+	teacher1.stu.name = "xiaowang";
+	teacher1.stu.age = 19;
+
+	teacher1.stu.score = 90;
+	cout << "老师名字" << teacher1.name << "老师id " << teacher1.id << "老师姓名 " << teacher1.name << endl;
+	cout << teacher1.stu.name << teacher1.stu.age << teacher1.stu.score << endl;
+	//例子老师带一个学生，老师结构体的属性，编号，名字，年龄，带的学生struct Student
+	//struct student 姓名，年龄，考试分数，学生结构体作为老师结构体中的成员，嵌套
+
+	
 }
