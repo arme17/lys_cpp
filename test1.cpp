@@ -5,60 +5,63 @@
 using namespace std;
 #include <string>
 #include<ctime>
-struct Student {
-	string sName;
-	int score;
-};
+//要求： 定义英雄结构体，录入数据，利用冒泡排序对年龄进行排序输出
 
-//老师结构体
-struct Teacher {
-	string tname;
-	struct Student sArray[5];
-};
-//给老师和学生赋值的函数
-string nameSeed = "ABCDE";
-void allocateSpace(struct Teacher tArray[], int len) {
-	for (int i = 0; i < len; i++)
-	{
-		tArray[i].tname = "Teacher_";
-		tArray[i].tname += nameSeed[i];
-		//通过循环给每名老师所带的学生赋值
-
-		for (int j = 0; j < 5; j++)
-		{
-			tArray[i].sArray[j].sName = "student_";
-			tArray[i].sArray[j].sName += nameSeed[j];
-			int random = rand() % 61 + 40;
-			tArray[i].sArray[j].score = random;
-		}
-		
-	}
-}
-//打印所有信息
-void printInfo(struct Teacher tArray[5], int len)
+struct Hero
 {
-	for (int i = 0; i < len; i++)
+	string name;
+	int age;
+	string sex;
+};
+//冒泡排序实现年龄升序排列
+void bubbleSort(struct Hero heroArray[], int len)
+{
+	for (int i = 0; i < len - 1; i++)
 	{
-		cout << "老师姓名:" << tArray[i].tname << endl;
-		for (int j = 0; j < 5; j++)
+		for (int j = 0; j < len - i - 1; j++)
 		{
-			cout << "\t学生姓名" << tArray[i].sArray[j].sName << 
-				"分数"<< tArray[i].sArray[j].score<<endl;
-			
+			if (heroArray[j].age > heroArray[j + 1].age)
+			{
+				struct Hero temp = heroArray[j];
+				heroArray[j] = heroArray[j + 1];
+				heroArray[j + 1] = temp;
+
+			}
 		}
+
 	}
 }
-//学生结构体
+void printHero(struct Hero heroArray[], int len) {
+	for (int i = 0; i < len; i++)
+	{
+		cout << "姓名  " << heroArray[i].name << "  年龄 " << heroArray[i].age << "性别" << heroArray[i].sex << endl;
+
+	}
+}
+
 int main()
 {
-	srand((unsigned int)time(NULL));
-	//创建三个老师的数组
-	struct Teacher tArray[3];
-	//通过函数给三名老师的信息赋值，并给老师带的学生信息赋值
-	int len = sizeof(tArray) / sizeof(tArray[0]);
-	allocateSpace(tArray, len);
-	//打印所有老师及所带学生信息
-	printInfo(tArray,len);
+	struct Hero heroArray[5] =
+	{
+		{"刘备",23,"男性"},
+		{"关羽",22,"男性"},
+		{"张飞",20,"男性"},
+		{"赵云",21,"男性"},
+		{"貂蝉",19,"女性"},
+	};
+	int len = sizeof(heroArray) / sizeof(heroArray[0]);
+	for (int i = 0; i < len; i++)
+	{
+		cout<< "姓名  "<< heroArray[i].name << "  年龄 " <<heroArray[i].age<<"性别"<<heroArray[i].sex<<endl;
+
+	}
+	cout << "排序后的结果" << endl;
+	
+	//3对数组进行排序，按照年龄进行升序排序
+	bubbleSort(heroArray, len);
+	//4将排序后的结果打印输出
+	printHero(heroArray, len);
+	
 
 
 }
