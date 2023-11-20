@@ -5,63 +5,53 @@
 using namespace std;
 #include <string>
 #include<ctime>
-//要求： 定义英雄结构体，录入数据，利用冒泡排序对年龄进行排序输出
+int a = 10;
+int b = 20;
 
-struct Hero
+
+//2在堆区利用new开辟数组
+
+
+
+//栈区数据不要返回局部变量的地址
+int* func()
 {
-	string name;
-	int age;
-	string sex;
-};
-//冒泡排序实现年龄升序排列
-void bubbleSort(struct Hero heroArray[], int len)
-{
-	for (int i = 0; i < len - 1; i++)
-	{
-		for (int j = 0; j < len - i - 1; j++)
-		{
-			if (heroArray[j].age > heroArray[j + 1].age)
-			{
-				struct Hero temp = heroArray[j];
-				heroArray[j] = heroArray[j + 1];
-				heroArray[j + 1] = temp;
-
-			}
-		}
-
-	}
+	int a = 10;
+	return &a;
 }
-void printHero(struct Hero heroArray[], int len) {
-	for (int i = 0; i < len; i++)
-	{
-		cout << "姓名  " << heroArray[i].name << "  年龄 " << heroArray[i].age << "性别" << heroArray[i].sex << endl;
-
-	}
+//堆区开辟数据
+int* func1()
+{//利用new关键字可以将数据开辟在堆区
+	int* p = new int(10);//用new开辟一块内存，用指针接收返回的编号
+	return p;
 }
-
 int main()
 {
-	struct Hero heroArray[5] =
-	{
-		{"刘备",23,"男性"},
-		{"关羽",22,"男性"},
-		{"张飞",20,"男性"},
-		{"赵云",21,"男性"},
-		{"貂蝉",19,"女性"},
-	};
-	int len = sizeof(heroArray) / sizeof(heroArray[0]);
-	for (int i = 0; i < len; i++)
-	{
-		cout<< "姓名  "<< heroArray[i].name << "  年龄 " <<heroArray[i].age<<"性别"<<heroArray[i].sex<<endl;
+		//在堆区开辟数据
+	int* p1 = func1();
+	cout << *p1 << endl;
+	//栈区数据不要返回局部变量的地址
+	int*p =  func();
+	cout << *p << endl;
+	cout << *p << endl;//乱码
+	//全局区
 
-	}
-	cout << "排序后的结果" << endl;
-	
-	//3对数组进行排序，按照年龄进行升序排序
-	bubbleSort(heroArray, len);
-	//4将排序后的结果打印输出
-	printHero(heroArray, len);
-	
+	//全局变量、
+	cout << "全局变量地址" << (int)&a << endl;
+	cout << "全局变量地址" << (int)&b << endl;
+	//静态变量、常量
+	static int s_a = 10;
+	static int s_b = 12;
+	cout << "静态变量地址" << (int)&s_a << endl;
+	cout << "静态变量地址" << (int)&s_b << endl;
+	//创建普通局部变量
+	int la = 10;
+	int lb = 20;
+	cout << "局部变量地址" << (int)&la << endl;
+	cout << "局部变量地址" << (int)&lb << endl;
+	//字符串常量
 
+
+	//const
 
 }
