@@ -5,97 +5,44 @@
 using namespace std;
 #include <string>
 #include<ctime>
-//1new的基本语法
-int* func()
+//打印数据函数
+void showValue(const int& val)
 {
-	//堆区创建整型数据
-	//new 返回该数据类型的指针
-	int* p = new int(10);
-	return p;
+	//val = 1000;不可以修改了
+	cout << "val = " << val << endl;
 }
-void test1()
+//函数重载，让函数名相同，提高复用性
+//函数重载满足条件，1同一个作用域下2函数名称相同，3函数参数类型不同，个数不同，顺序不同
+void showValue(double a)
 {
-	int* p = func();
-	cout << *p << endl;
-	delete p;
-	//内存已经被释放，再次访问就是非法操作cout << *p << endl;
+	cout << "a =" << a<<endl;
 }
-//2堆区利用new开辟数组
-void test2()
-{
-	//创建10整型数据的数组，在堆区,小括号，存放10，中括号，有十个元素【10】，返回连续线性空间的首地址
-	int* arr = new int[10];
-	for (int i = 0; i < 10; i++)
-	{
-		arr[i] = i + 100;//给十个元素赋值
+//注意事项，函数返回值不可以作为函数重载的条件
 
-	}
-	for (int i = 0; i < 10; i++)
-	{
-		cout << arr[i] << endl;
-	}
-	delete[] arr;//释放数组时加一个中括号
-}
-
-//交换函数
-
-//1值传递
-void mySwap1(int a, int b)
+//函数重载的注意事项
+//1 引用作为函数重载的条件
+void func(const int& a)//int &a = 10;
 {
-	int temp = a;
-	a = b;
-	b = temp;
-	cout << "swap c = " << a << endl;
-	cout << "swap d = " << b << endl;
+	cout << "const" << endl;
 }
-//2地址传递
-void mySwap2(int* a, int* b)
+void func(int& a)//const int &a = 10;
 {
-	int temp = *a;
-	*a = *b;
-	*b = temp;
+	cout << "普通" << endl;
 }
-//引用传递
-void mySwap3(int& a, int& b)
-{
-	int temp = a;
-	a = b;
-	b = temp;
-	cout << "swap3 c = " << a << endl;
-	cout << "swap3 d = " << b << endl;
-}
-
+//2 函数重载碰到默认参数
 int main()
 {
-	test1();
-	test2();
-	int c = 20;
-	int d = 30;
-	mySwap1(c,d);
-	cout << "值传递c = "<<c << endl;
-	cout << "值传递d = "<<d << endl;
-	mySwap2(&c, &d);
-	cout << "地址传递c = " << c << endl;
-	cout << "地址传递d = " << d << endl;
-	int e = 20;
-	int f = 30;
-	mySwap3(e,f);
-	cout << "引用传递c = " << e<< endl;
-	cout << "引用传递d = " << f << endl;
+	//使用场景，使用形参来防止误操作
+	int a = 100;
+	showValue(a);
+	double b = 3.14;
+	showValue(b);
+	int& ref = a;//引用必须引用一块合法的内存空间
+	//const int& ref = 10;
+	int c = 10;
+	func(c);//不走const,走可读可写的函数
+	func(10);
 
-	//3引用的基本语法
-	//数据类型 &别名 = 原名
-	int a = 20;
-	int& b = a;
-	cout << a << endl;
-	cout << b << endl;
-	b = 100;
-	cout << a << endl;
-	cout << b << endl;
-	//引用必须初始化
-	int a1 = 10;
-	int &c1 = a1;
-	//引用初始化以后不可以改变了
-	
-
+	system("pause");
+	return 0;
 }
