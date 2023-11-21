@@ -5,112 +5,52 @@
 using namespace std;
 #include <string>
 #include<ctime>
-//点和圆关系案例
-// 点类
-class Point
+
+class person
 {
 public:
-//设置x
-	void setX(int x)
-	{
-		m_X = x;
-	}
-//获取x
-	int getX()
-	{
-		return m_X;
-	}
-
-//设置y
-	void setY(int y)
-	{
-		m_Y = y;
-	}
-
-//获取y
-	int getY()
-	{
-		return m_Y;
-	}
-private:
-	int m_X;
-	int m_Y;
-
-};
-
-
-//圆类
-class Circle
-{
-public:
-	//设置半径
-	void setR(int r)
-	{
-		m_R = r;
-	}
-	//获取半径
-	int getR()
-	{
-		return m_R;
-	}
-
-	//设置圆心
-	void setCenter(Point center)
-	{
-		m_center = center;
-	}
-
-	//获取圆心
-	Point getCenter()
-	{
-		return m_center;
-	}
-
-private:
-	int m_R;
-
-	Point m_center;
+	//构造函数
 	
+	person(int a)
+	{
+		age = a;
+		cout << "person的有参构造函数" << endl;
+	}
+	
+	//拷贝构造函数
+	person(const person& p)
+	{
+		age = p.age;
+		cout << "person的拷贝构造函数" << endl;
+	}
+
+	int age;
 };
 
-//判断点和圆的关系
-void isInCircle(Circle& c, Point& p)
+
+
+//调用
+void test01()
 {
-	//计算两点之间距离的平方
-	int distance =
-		(c.getCenter().getX() - p.getX()) * (c.getCenter().getX() - p.getX()) +
-		(c.getCenter().getY() - p.getY()) * (c.getCenter().getY() - p.getY());
-	//计算半径的平方
-	int rDistance = c.getR() * c.getR();
-	//判断关系
-	if (distance==rDistance)
-	{
-		cout << "点在圆上" << endl;
-	}
-	else if (distance > rDistance)
-	{
-		cout << "点在圆外" << endl;
-	}
-	else
-	{
-		cout << "点在圆内" << endl;
-	}
+	//括号法
+	//person p1;
+	person p2(10);
+	person p3(p2);
+	cout << "p2.age = " << p2.age << endl;
+	cout << "p3.age = " << p3.age << endl;
+	//显示法
+	person p5 = person(10);
+	person p4 = person(p3);
+	person(10);//匿名对象，执行完马上释放掉
+	//隐式转换法
+	person p6 = 10; //person p6 = person(10);
+	person p7 = p4;
+
 }
-
-
 int main()
 {
-	//创建圆
-	Circle c1;
-	c1.setR(10);
-	Point center;
-	center.setX(10);
-	center.setY(0);
-	c1.setCenter(center);
-	//创建点
-	Point p1;
-	p1.setX(10);
-	p1.setY(10);
-	//判断两者的关系
-	isInCircle(c1,p1);
+
+
+	test01();
 }
+
