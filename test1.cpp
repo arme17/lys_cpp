@@ -6,51 +6,53 @@ using namespace std;
 #include <string>
 #include<ctime>
 
+/// <summary>
+///拷贝构造函数的调用时机
+/// 1使用一个已经创建完毕的对象来初始化一个新对象
+/// 2值传递的方式来给函数参数传值
+/// 3值方式来返回局部对象
+/// </summary>
 class person
 {
 public:
-	//构造函数
 	
-	person(int a)
+	person()
 	{
-		age = a;
-		cout << "person的有参构造函数" << endl;
+		cout << "person默认构造函数调用" << endl;
 	}
-	
-	//拷贝构造函数
+	person(int age)
+	{
+		m_age = age;
+		cout << "person有参构造函数调用" << endl;
+	}
 	person(const person& p)
 	{
-		age = p.age;
-		cout << "person的拷贝构造函数" << endl;
+		m_age = p.m_age;
+		cout << "person拷贝构造函数调用" << endl;
 	}
 
-	int age;
+	~person() {
+		cout << "person析构函数调用" << endl;
+	}
+	int m_age;
+private:
+
 };
 
-
-
-//调用
 void test01()
 {
-	//括号法
-	//person p1;
-	person p2(10);
-	person p3(p2);
-	cout << "p2.age = " << p2.age << endl;
-	cout << "p3.age = " << p3.age << endl;
-	//显示法
-	person p5 = person(10);
-	person p4 = person(p3);
-	person(10);//匿名对象，执行完马上释放掉
-	//隐式转换法
-	person p6 = 10; //person p6 = person(10);
-	person p7 = p4;
-
+	person p;
+	p.m_age = 19;
+	person p2(p);
+	cout << "p2.age=  " << p2.m_age << endl;
 }
+
+
 int main()
 {
 
-
+	person p;
 	test01();
+	//doWork(p);
 }
 
