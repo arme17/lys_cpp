@@ -5,49 +5,86 @@
 using namespace std;
 #include <string>
 #include<ctime>
-class Building;
-class GoodGay
-{
+//加号运算符重载
+class MyInterger {
+	friend ostream& operator<<(ostream& cout, MyInterger myint);
 public:
-	GoodGay();
-	Building* building;
-	void visit1();//visit 可以访问BUILDING私有成员
-	void visit2();
-};
-class Building {
-	//告诉编译器，goodGay类下的visit成员函数作为本类的好朋友，可以访问私有成员
-	friend void GoodGay::visit1();
-public:
-	Building();
-public:
-	string m_SittingRoom;
-private:
-	string m_BedRoom;
+	MyInterger()
+	{
+		m_num = 0;
+	}
+	MyInterger& operator++()
+	{
+		m_num++;
+		//返回该对象本身，类比++a
+		return *this;
 
+	}
+	
+	//重载后置++运算符,返回的是值，因为局部变量在函数执行完毕后会被释放掉，所以应该返回值
+	MyInterger operator++(int)
+	{
+		//先记录当前结果
+		MyInterger temp = *this;
+		m_num++;
+		return temp;
+
+	}
+	MyInterger& operator--()
+	{
+		m_num--;
+		return *this;
+	}
+	MyInterger operator--(int)
+	{
+		MyInterger temp = *this;
+		m_num--;
+		return temp;
+	}
+private:
+	int m_num;
 };
-//类外实现成员函数
-Building::Building()
+//重载<<运算符
+ostream& operator<<(ostream& cout, MyInterger myint)
 {
-	//编译器，goodGay类下的visit成员函数作为本类的好朋友，可以访问私有成员
-	m_SittingRoom = "客厅";
-	m_BedRoom = "卧室";
+	cout << myint.m_num;
+	return cout;
 }
-GoodGay::GoodGay()
+
+void test01()
 {
-	building = new Building;
+	MyInterger myint;
+	cout << ++(++(++myint)) << endl;
+	cout << myint << endl;
 }
-void GoodGay::visit1()
+
+void test02()
 {
-	cout << "visit1 fuc正在访问" << building->m_SittingRoom << endl;
-	cout << "visit1 fuc正在访问" << building->m_BedRoom << endl;
+	MyInterger myint;
+	cout << myint++ << endl;
+	cout << myint << endl;//h后置递增先记录表达式，再递增
+
+	
 }
-void GoodGay::visit2()
+void test03()
 {
-	cout << "visit2 fuc正在访问" << building->m_SittingRoom << endl;
+	MyInterger myint;
+	cout <<--myint << endl;
+	cout << myint << endl;
+}
+void test04()
+{
+	MyInterger myint;
+	cout << myint-- << endl;
+	cout << myint << endl;
 }
 int main()
 {
-	GoodGay gg;
-	gg.visit1();
-	gg.visit2();
+	test01();
+	cout << "____________" << endl;
+	test02();
+	cout << "____________" << endl;
+	test03();
+	cout << "____________" << endl;
+	test04();
 }
