@@ -5,72 +5,53 @@
 using namespace std;
 #include <string>
 #include<ctime>
-
-//空指针调用成员函数
-class person
+//类做友元
+class Building;
+class GoodGay
 {
 public :
-	void showclassname()
-	{
-		cout << "this is person class" << endl;
-	}
-	int m_age;
-	void showpersonage()
-	{
-		//健壮性
-		if (this==NULL)
-		{
-			return;
-		}
-		cout << "age =" << m_age<<endl;
-	}
-	//常函数，const修饰的是this指针，this指针的指向不可以修改，指向的值不可以改，除非用mutable修饰变量
-	void showperson() const 
-	{
-		this->m_b = 100;
-	}
-	mutable int m_b;
-	int m_a;
-};
-class Building {
-	friend void goodGay(Building* building);
-public:
-	Building()
-	{
-		m_sittingRome = "客厅";
-		m_bedRoom = "卧室";
-	}
-public:
-	string m_sittingRome;
-private:
-	string m_bedRoom;
+	GoodGay();
+	Building* building;
+	void visit();//参观函数访问building属性
+
+
 };
 
+class Building {
+	//类作为友元的内容
+	friend class GoodGay;
+public:
+	Building();
+	string m_SittingRoom;
+private:
+
+	string m_BedRoom;
+
+};
+//类外写成员函数
+Building::Building()
+{
+	m_SittingRoom = "客厅";
+	m_BedRoom = "卧室";
+}
+GoodGay::GoodGay()
+{
+	//创建建筑物对象
+	building = new Building;//new 什么数据类型，返回什么数据类型的指针，所以用building来接收
+}
+void GoodGay::visit()
+{
+	cout << "好基友正在访问：" << building->m_SittingRoom << endl;
+	cout << "好基友正在访问：" << building->m_BedRoom << endl;
+		
+}
 void test01()
 {
-	/*person* p = NULL;
-	p->showClassName();
-	 p->showPersonAge();*/
-	 const person p;//常对象
-	// p.showPerson();
-	 p.m_b = 100;
-	 //p.m_a = 200;
-
-	
+	GoodGay gg;
+	gg.visit();
 }
-//全局函数做友元
-void goodGay(Building *building)
-{
-	cout << "好基友全局函数在访问:" << building->m_sittingRome << endl;
-	cout << "好基友全局函数在访问:" << building->m_bedRoom << endl;
-
-}
-
 int main()
 {
-	Building b;
-	goodGay(&b);
 	test01();
-	
-}
 
+}
