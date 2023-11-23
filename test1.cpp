@@ -5,53 +5,49 @@
 using namespace std;
 #include <string>
 #include<ctime>
-//类做友元
 class Building;
 class GoodGay
 {
-public :
+public:
 	GoodGay();
 	Building* building;
-	void visit();//参观函数访问building属性
-
-
+	void visit1();//visit 可以访问BUILDING私有成员
+	void visit2();
 };
-
 class Building {
-	//类作为友元的内容
-	friend class GoodGay;
+	//告诉编译器，goodGay类下的visit成员函数作为本类的好朋友，可以访问私有成员
+	friend void GoodGay::visit1();
 public:
 	Building();
+public:
 	string m_SittingRoom;
 private:
-
 	string m_BedRoom;
 
 };
-//类外写成员函数
+//类外实现成员函数
 Building::Building()
 {
+	//编译器，goodGay类下的visit成员函数作为本类的好朋友，可以访问私有成员
 	m_SittingRoom = "客厅";
 	m_BedRoom = "卧室";
 }
 GoodGay::GoodGay()
 {
-	//创建建筑物对象
-	building = new Building;//new 什么数据类型，返回什么数据类型的指针，所以用building来接收
+	building = new Building;
 }
-void GoodGay::visit()
+void GoodGay::visit1()
 {
-	cout << "好基友正在访问：" << building->m_SittingRoom << endl;
-	cout << "好基友正在访问：" << building->m_BedRoom << endl;
-		
+	cout << "visit1 fuc正在访问" << building->m_SittingRoom << endl;
+	cout << "visit1 fuc正在访问" << building->m_BedRoom << endl;
 }
-void test01()
+void GoodGay::visit2()
 {
-	GoodGay gg;
-	gg.visit();
+	cout << "visit2 fuc正在访问" << building->m_SittingRoom << endl;
 }
 int main()
 {
-	test01();
-
+	GoodGay gg;
+	gg.visit1();
+	gg.visit2();
 }
