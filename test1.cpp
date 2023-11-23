@@ -5,54 +5,44 @@
 using namespace std;
 #include <string>
 #include<ctime>
-
-/// <summary>
-///拷贝构造函数的调用时机
-/// 1使用一个已经创建完毕的对象来初始化一个新对象
-/// 2值传递的方式来给函数参数传值
-/// 3值方式来返回局部对象
-/// </summary>
-class person
+//深拷贝和浅拷贝
+class phone
 {
 public:
-	
-	person()
+	phone(string pname)
 	{
-		cout << "person默认构造函数调用" << endl;
+		cout << "phone构造函数调用" << endl;
+		m_pname = pname;
 	}
-	person(int age)
+	string m_pname;
+	~phone()
 	{
-		m_age = age;
-		cout << "person有参构造函数调用" << endl;
+		cout << "1" << endl;
 	}
-	person(const person& p)
-	{
-		m_age = p.m_age;
-		cout << "person拷贝构造函数调用" << endl;
-	}
-
-	~person() {
-		cout << "person析构函数调用" << endl;
-	}
-	int m_age;
-private:
-
 };
-
-void test01()
+class person
 {
-	person p;
-	p.m_age = 19;
-	person p2(p);
-	cout << "p2.age=  " << p2.m_age << endl;
+public :
+	person(string name, string pname) :m_Name(name), m_phone(pname) {
+		cout << "person构造函数调用" << endl;
+	}
+	string m_Name;
+	phone m_phone;
+	~person() {
+		cout << "2" << endl;
+	}
+};
+void test()
+{
+	person p("张三", "iphone");
+	cout << p.m_Name <<endl;
+	//这里注意要先用p.m_phone再点mpname
+	cout << p.m_phone.m_pname<< endl;
 }
-
-
 int main()
 {
-
-	person p;
-	test01();
-	//doWork(p);
+	test();
+	
+	
 }
 
