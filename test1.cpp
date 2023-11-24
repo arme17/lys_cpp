@@ -5,119 +5,80 @@
 using namespace std;
 #include <string>
 #include<ctime>
-//多态
-//多态的基本概念1 静态多态：函数重载，运算符重载属于静态多态，复用函数名
-//2动态多态，派生类和虚函数运行时实现多态
-//静态多态和动态多态的区别，
-// 1静态多态函数地址早绑定，编译阶段确定函数地址
-//2动态多态的函数地址晚绑定，运行阶段确定函数地址
-//多态满足条件，有继承关系，子类重写父类中的虚函数
-
-//计算器类
-
-class Calculator
+//多态案例2，制作饮品
+//煮水，冲泡，倒入杯中，加入辅料
+class AbstractDrinking
 {
 public:
-	int getResult(string oper)
+	//煮水
+	virtual void Boil() = 0;
+	//冲泡
+	virtual void Brew() = 0;
+	//倒入杯中
+	virtual void PourInCup() = 0;
+	//加入辅料
+	virtual void PourSomeThing() = 0;
+
+	void makeDrink()
 	{
-		if (oper == "+")
-		{
-			return m_num1 + m_num2;
-		}
-		else if (oper == "-")
-		{
-			return m_num1 - m_num2;
-		}
-		else if (oper == "*")
-		{
-			return m_num1 * m_num2;
-		}	
-		else if(oper == "/")
-		{
-			return m_num1 / m_num2;
-		}
-		//扩展新功能，需要修改源码
+		Boil();
+		Brew();
+		PourInCup();
+		PourSomeThing();
 	}
-	int m_num1;
-	int m_num2;
 };
+class Coffee :public AbstractDrinking
+{
+public:
+	virtual  void Boil()
+	{
+		cout << "煮农夫水" << endl;
+	}
+	virtual void Brew()
+	{
+		cout << "冲泡咖啡" << endl;
+	}
+	virtual void PourInCup()
+	{
+		cout << "倒入杯中" << endl;
+	}
+	virtual void PourSomeThing()
+	{
+		cout << "加入糖和牛奶" << endl;
+	}
+};
+class Tea :public AbstractDrinking
+{
+public:
+	virtual  void Boil()
+	{
+		cout << "煮农夫水" << endl;
+	}
+	virtual void Brew()
+	{
+		cout << "冲泡茶水" << endl;
+	}
+	virtual void PourInCup()
+	{
+		cout << "倒入杯中" << endl;
+	}
+	virtual void PourSomeThing()
+	{
+		cout << "加入柠檬" << endl;
+	}
+};
+void doWork(AbstractDrinking* abs)//，如何调用里面的接口
+//AbstractDrinking* abs = new Coffee;父类的指针指向子类的对象，
+{
+	abs->makeDrink();
+	delete abs;//手动释放
+}
 void test01()
 {
-	//创建一个计算器对象
-	Calculator c;
-	c.m_num1 = 10;
-	c.m_num2 = 10;
-	cout << c.m_num1 << "+" << c.m_num2 << "=" << c.getResult("+") << endl;
-}
-//利用多态实现器
-//实现计算器的抽象类
-class AbstractCalculator {
-public:
-	virtual int getResult()
-	{
-		return 0;
-	}
-
-	int m_num1;
-	int m_num2;
-};
-
-//设计加法计算器类
-class AddCalculator :public AbstractCalculator
-{
-public:
-	int getResult()
-	{
-		return m_num1 + m_num2;
-	}
-};
-class SubCalculator :public AbstractCalculator
-{
-public:
-	int getResult()
-	{
-		return m_num1 - m_num2;
-	}
-};
-class MulCalculator :public AbstractCalculator
-{
-public:
-	int getResult()
-	{
-		return m_num1 * m_num2;
-	}
-};
-class DevCalculator :public AbstractCalculator
-{
-public:
-	int getResult()
-	{
-		return m_num1 / m_num2;
-	}
-};
-//多态的使用条件，父类的指针或者引用指向子类的对象
-void test02()
-{
-	AbstractCalculator* abc = new AddCalculator;
-	abc->m_num1 = 10;
-	abc->m_num2 = 10;
-	cout << abc->m_num1 << "+" << abc->m_num2 << "=" << abc->getResult() << endl;
-	delete abc;
-	//减法运算
-	abc = new SubCalculator;
-	abc->m_num1 = 10;
-	abc->m_num2 = 3;
-	cout << abc->m_num1 << "-" << abc->m_num2 << "=" << abc->getResult() << endl;
-	delete abc;//用完销毁掉
-	//乘法运算
-	abc = new MulCalculator;
-	abc->m_num1 = 10;
-	abc->m_num2 = 10;
-	cout << abc->m_num1 << "*" << abc->m_num2 << "=" << abc->getResult() << endl;
-	delete abc;
+	doWork(new Coffee);//new 关键字在堆区开辟内存，
+	doWork(new Tea);
 }
 int main()
 {
-	//test01();
-	test02();
+	test01();
 }
