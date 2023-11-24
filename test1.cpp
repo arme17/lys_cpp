@@ -5,86 +5,123 @@
 using namespace std;
 #include <string>
 #include<ctime>
-class person {
-public:
-	person(string name, int age)
-	{
-		m_age = age;
-		m_name = name;
-	}
-	//重载关系运算符==
-	bool operator==(person& p)
-	{
-		if (this->m_age==p.m_age&&this->m_name==p.m_name)
-		{
-			return true;
-		}
-		return false;
-	}
-	bool operator!=(person& p)
-	{
-		if (this->m_age == p.m_age && this->m_name == p.m_name)
-		{
-			return false;
-		}
-		return true;
-	}
 
-	
-	string m_name;
-	int m_age;
-};
-class MyPrint {
-public:
+//继承的好处减少重复代码
+//语法class 子类：继承方式 父类
+//子类也成为派生类
+//父类称为基类
 
-	//函数调用运算符() 重载
-	void operator()(string test)
-	{
-		cout << test << endl;
-	}
-};
-class MyAdd
+class BasePage 
 {
 public:
-	int operator()(int num1, int num2)
+	void header()
 	{
-		return num1 + num2;
+
+	}
+	void footer()
+	{
+		cout << "帮助中心，交流合作，站内地图" << endl;
+	}
+	void left()
+	{
+		cout << "java,python,c++" << endl;
+
+	}
+
+};
+//java页面
+class Java :public BasePage
+{
+public:
+	void content()
+	{
+		cout << "java学科视频" << endl;
+	}
+};
+
+
+//python页面
+
+class Python :public BasePage
+{
+public:
+	void content()
+	{
+		cout << "python学科视频" << endl;
+	}
+};
+//cpp页面
+class cpp :public BasePage
+{
+public:
+	void content()
+	{
+		cout << "cpp学科视频" << endl;
+	}
+};
+
+class Base1 
+{
+public:
+	int m_a;
+protected:
+	int m_b;
+private:
+	int m_c;
+
+};
+class son1 :public Base1 
+{
+public:
+	void func() {
+		m_a = 10;//父类公共，子类公共
+		m_b = 20;//父类保护，子类保护
+		//m_c = 20;//父类私有，子类不可访问
+	}
+
+};
+class son2 :protected Base1
+{
+public:
+	void func()
+	{
+		m_a = 100;//父类公共，子类保护
+		m_b = 100;//父类保护，子类保护
+
+			//m_c = 200;//父类中私有成员访问不到
+	}
+
+};
+
+//私有继承、
+class son3 :private Base1 {
+public:
+	void func()
+	{
+		m_a = 100;//父类公共，子类私有
+		m_b = 200;//父类保护，子类私有
+		//m_c = 200;//父类私有，子类访问不到
+
+	}
+};
+class Grandson3 :public son3
+{
+public:
+	void func() {
+		//m_a = 100;//子类私有，孙类访问不到
 	}
 };
 void test01()
 {
-	person p1("tom", 29);
-	person p2("jack", 29);
-	if (p1==p2)
-	{
-		cout << "p1=p2" << endl;
-	}
-	
-	if (p1 != p2)
-	{
-		cout << "p1!=p2" << endl;
-	}
-}
-
-void test02()
-{
-	MyPrint myprint;
-	myprint("helloworld");//仿函数,没太大限制
-	
-}
-void test03()
-{
-	MyAdd myadd;
-	int ret = myadd(1, 2);
-	cout << ret << endl;
-	//匿名函数对象，算完立即释放
-	cout << MyAdd()(100,100) << endl;
-	//
+	Java ja;
+	ja.content();
+	son1 s1;
+	s1.m_a = 100;//公共类外可以访问，保护，私有类外不可
+	son2 s2;
+	//s2.m_a = 200;//保护继承，类外访问不到
 	
 }
 int main()
 {
 	test01();
-	test02();
-	test03();
 }
