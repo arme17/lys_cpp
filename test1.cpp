@@ -5,123 +5,89 @@
 using namespace std;
 #include <string>
 #include<ctime>
-
-//继承的好处减少重复代码
-//语法class 子类：继承方式 父类
-//子类也成为派生类
-//父类称为基类
-
-class BasePage 
+//动物类
+class Animal
 {
 public:
-	void header()
+	virtual void speak()//用virtual实现地址晚绑定
 	{
+		cout << "speaking" << endl;
+	}
+	int m_age;
+};
+class Cat :public Animal {
+public:
+	 void speak()
+	{
+		cout << "miao~" << endl;
+	}
+};
 
-	}
-	void footer()
-	{
-		cout << "帮助中心，交流合作，站内地图" << endl;
-	}
-	void left()
-	{
-		cout << "java,python,c++" << endl;
-
-	}
+//羊类
+class Sheep :virtual public Animal {
 
 };
-//java页面
-class Java :public BasePage
+//驼类
+class Tuo :virtual public Animal{
+
+};
+
+
+class SheepTuo :public Sheep, public Tuo {
+
+};
+//执行说话的函数
+void doSpeak(Animal& animal)
+{
+	animal.speak();
+
+}
+void test03()
+{
+	Cat cat;
+	doSpeak(cat);//编译阶段就确定了函数地址
+}
+void test02()
+{
+	SheepTuo st;
+	st.Sheep::m_age = 19;
+	st.Tuo::m_age = 20;
+	cout << st.Sheep::m_age << endl;
+	cout << st.Tuo::m_age << endl;
+	cout << st.m_age << endl;
+}
+//继承中的同名静态成员处理方式 
+class Base
 {
 public:
-	void content()
-	{
-		cout << "java学科视频" << endl;
-	}
+	
+	static int m_a;
+
+
 };
-
-
-//python页面
-
-class Python :public BasePage
+int Base::m_a = 100;
+class Son :public Base
 {
 public:
-	void content()
-	{
-		cout << "python学科视频" << endl;
-	}
-};
-//cpp页面
-class cpp :public BasePage
-{
-public:
-	void content()
-	{
-		cout << "cpp学科视频" << endl;
-	}
-};
-
-class Base1 
-{
-public:
-	int m_a;
-protected:
-	int m_b;
-private:
-	int m_c;
+	static int m_a;
 
 };
-class son1 :public Base1 
-{
-public:
-	void func() {
-		m_a = 10;//父类公共，子类公共
-		m_b = 20;//父类保护，子类保护
-		//m_c = 20;//父类私有，子类不可访问
-	}
-
-};
-class son2 :protected Base1
-{
-public:
-	void func()
-	{
-		m_a = 100;//父类公共，子类保护
-		m_b = 100;//父类保护，子类保护
-
-			//m_c = 200;//父类中私有成员访问不到
-	}
-
-};
-
-//私有继承、
-class son3 :private Base1 {
-public:
-	void func()
-	{
-		m_a = 100;//父类公共，子类私有
-		m_b = 200;//父类保护，子类私有
-		//m_c = 200;//父类私有，子类访问不到
-
-	}
-};
-class Grandson3 :public son3
-{
-public:
-	void func() {
-		//m_a = 100;//子类私有，孙类访问不到
-	}
-};
+int Son::m_a = 200;//类外初始化
+//同名静态成员属性
 void test01()
 {
-	Java ja;
-	ja.content();
-	son1 s1;
-	s1.m_a = 100;//公共类外可以访问，保护，私有类外不可
-	son2 s2;
-	//s2.m_a = 200;//保护继承，类外访问不到
-	
+	//通过对象访问
+	Son s;
+	cout << s.m_a << endl;
+	cout << s.Base::m_a << endl;
+	//通过类名访问
+	cout << Son::m_a << endl;
+	cout << Son::Base::m_a << endl; 
 }
+//同名静态成员函数
 int main()
 {
-	test01();
+	//test01();
+	test02();
+	test03();
 }
