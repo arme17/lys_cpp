@@ -5,86 +5,46 @@
 using namespace std;
 #include <string>
 #include<ctime>
-//加号运算符重载
-class MyInterger {
-	friend ostream& operator<<(ostream& cout, MyInterger myint);
+class person {
 public:
-	MyInterger()
+	person(int age)
 	{
-		m_num = 0;
+		m_age = new int(age);//new int 返回的是int *，开放在堆区，手动释放
 	}
-	MyInterger& operator++()
+	//~person()
+	//{
+	//	if (m_age!=NULL)
+	//	{
+	//		delete m_age;
+	//		m_age = NULL;
+	//	}
+	//}
+	//赋值运算符重载，钱考过
+	person& operator=(person& p)
 	{
-		m_num++;
-		//返回该对象本身，类比++a
-		return *this;
-
-	}
-	
-	//重载后置++运算符,返回的是值，因为局部变量在函数执行完毕后会被释放掉，所以应该返回值
-	MyInterger operator++(int)
-	{
-		//先记录当前结果
-		MyInterger temp = *this;
-		m_num++;
-		return temp;
-
-	}
-	MyInterger& operator--()
-	{
-		m_num--;
+		//先判断是否有属性在堆区，如果有就释放干净，再深拷贝
+		if (m_age!=NULL)
+		{
+			delete m_age;
+			m_age = NULL;
+		}
+		m_age = new int(*p.m_age);//深拷贝
 		return *this;
 	}
-	MyInterger operator--(int)
-	{
-		MyInterger temp = *this;
-		m_num--;
-		return temp;
-	}
-private:
-	int m_num;
+	int* m_age;
 };
-//重载<<运算符
-ostream& operator<<(ostream& cout, MyInterger myint)
-{
-	cout << myint.m_num;
-	return cout;
-}
-
 void test01()
 {
-	MyInterger myint;
-	cout << ++(++(++myint)) << endl;
-	cout << myint << endl;
+	person p1(10);
+	person p2(19);
+	person p3(18);
+	p3 = p2 = p1;//赋值操作
+	cout << *p1.m_age << endl;//*是解引用的操作
+	cout << *p2.m_age << endl;
+	cout << *p3.m_age << endl;
 }
-
-void test02()
-{
-	MyInterger myint;
-	cout << myint++ << endl;
-	cout << myint << endl;//h后置递增先记录表达式，再递增
-
-	
-}
-void test03()
-{
-	MyInterger myint;
-	cout <<--myint << endl;
-	cout << myint << endl;
-}
-void test04()
-{
-	MyInterger myint;
-	cout << myint-- << endl;
-	cout << myint << endl;
-}
+//赋值运算符重载 operator=,编译器提供的四个函数最后一个
 int main()
 {
 	test01();
-	cout << "____________" << endl;
-	test02();
-	cout << "____________" << endl;
-	test03();
-	cout << "____________" << endl;
-	test04();
 }
