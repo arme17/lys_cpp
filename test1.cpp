@@ -5,89 +5,49 @@
 using namespace std;
 #include <string>
 #include<ctime>
-//动物类
+//多态
+//多态的基本概念1 静态多态：函数重载，运算符重载属于静态多态，复用函数名
+//2动态多态，派生类和虚函数运行时实现多态
+//静态多态和动态多态的区别，
+// 1静态多态函数地址早绑定，编译阶段确定函数地址
+//2动态多态的函数地址晚绑定，运行阶段确定函数地址
+//多态满足条件，有继承关系，子类重写父类中的虚函数
+
 class Animal
 {
 public:
-	virtual void speak()//用virtual实现地址晚绑定
+	virtual void speak()
 	{
 		cout << "speaking" << endl;
 	}
-	int m_age;
 };
 class Cat :public Animal {
 public:
-	 void speak()
+	virtual void speak()
 	{
-		cout << "miao~" << endl;
+		cout << "miao!" << endl;
 	}
 };
-
-//羊类
-class Sheep :virtual public Animal {
-
+class Dog :public Animal {
+public:
+	virtual void  speak()
+	{
+		cout << "wo wo!" << endl;
+	}
 };
-//驼类
-class Tuo :virtual public Animal{
-
-};
-
-
-class SheepTuo :public Sheep, public Tuo {
-
-};
-//执行说话的函数
-void doSpeak(Animal& animal)
+//多态使用条件，父类指针或引用指向子类对象
+void doSpeak(Animal &animal)
 {
 	animal.speak();
-
 }
-void test03()
-{
-	Cat cat;
-	doSpeak(cat);//编译阶段就确定了函数地址
-}
-void test02()
-{
-	SheepTuo st;
-	st.Sheep::m_age = 19;
-	st.Tuo::m_age = 20;
-	cout << st.Sheep::m_age << endl;
-	cout << st.Tuo::m_age << endl;
-	cout << st.m_age << endl;
-}
-//继承中的同名静态成员处理方式 
-class Base
-{
-public:
-	
-	static int m_a;
-
-
-};
-int Base::m_a = 100;
-class Son :public Base
-{
-public:
-	static int m_a;
-
-};
-int Son::m_a = 200;//类外初始化
-//同名静态成员属性
 void test01()
 {
-	//通过对象访问
-	Son s;
-	cout << s.m_a << endl;
-	cout << s.Base::m_a << endl;
-	//通过类名访问
-	cout << Son::m_a << endl;
-	cout << Son::Base::m_a << endl; 
+	Cat cat;
+	doSpeak(cat);
+	Dog dog;
+	doSpeak(dog);
 }
-//同名静态成员函数
 int main()
 {
-	//test01();
-	test02();
-	test03();
+	test01();
 }
