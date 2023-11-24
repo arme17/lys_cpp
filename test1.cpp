@@ -7,44 +7,84 @@ using namespace std;
 #include<ctime>
 class person {
 public:
-	person(int age)
+	person(string name, int age)
 	{
-		m_age = new int(age);//new int 返回的是int *，开放在堆区，手动释放
+		m_age = age;
+		m_name = name;
 	}
-	//~person()
-	//{
-	//	if (m_age!=NULL)
-	//	{
-	//		delete m_age;
-	//		m_age = NULL;
-	//	}
-	//}
-	//赋值运算符重载，钱考过
-	person& operator=(person& p)
+	//重载关系运算符==
+	bool operator==(person& p)
 	{
-		//先判断是否有属性在堆区，如果有就释放干净，再深拷贝
-		if (m_age!=NULL)
+		if (this->m_age==p.m_age&&this->m_name==p.m_name)
 		{
-			delete m_age;
-			m_age = NULL;
+			return true;
 		}
-		m_age = new int(*p.m_age);//深拷贝
-		return *this;
+		return false;
 	}
-	int* m_age;
+	bool operator!=(person& p)
+	{
+		if (this->m_age == p.m_age && this->m_name == p.m_name)
+		{
+			return false;
+		}
+		return true;
+	}
+
+	
+	string m_name;
+	int m_age;
+};
+class MyPrint {
+public:
+
+	//函数调用运算符() 重载
+	void operator()(string test)
+	{
+		cout << test << endl;
+	}
+};
+class MyAdd
+{
+public:
+	int operator()(int num1, int num2)
+	{
+		return num1 + num2;
+	}
 };
 void test01()
 {
-	person p1(10);
-	person p2(19);
-	person p3(18);
-	p3 = p2 = p1;//赋值操作
-	cout << *p1.m_age << endl;//*是解引用的操作
-	cout << *p2.m_age << endl;
-	cout << *p3.m_age << endl;
+	person p1("tom", 29);
+	person p2("jack", 29);
+	if (p1==p2)
+	{
+		cout << "p1=p2" << endl;
+	}
+	
+	if (p1 != p2)
+	{
+		cout << "p1!=p2" << endl;
+	}
 }
-//赋值运算符重载 operator=,编译器提供的四个函数最后一个
+
+void test02()
+{
+	MyPrint myprint;
+	myprint("helloworld");//仿函数,没太大限制
+	
+}
+void test03()
+{
+	MyAdd myadd;
+	int ret = myadd(1, 2);
+	cout << ret << endl;
+	//匿名函数对象，算完立即释放
+	cout << MyAdd()(100,100) << endl;
+	//
+	
+}
 int main()
 {
 	test01();
+	test02();
+	test03();
 }
