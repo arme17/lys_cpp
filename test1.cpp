@@ -5,54 +5,144 @@
 using namespace std;
 #include <string>
 #include<ctime>
-class Animal
+//电脑组装
+//CPU。显卡，内存条抽象类
+class CPU
 {
 public:
-	Animal()
-	{
-		cout << "animal构造函数调用" << endl;
-	}
-	//virtual ~Animal()//父类的析构作为虚函数，可以走子类的析构
-	//	//利用虚析构可以解决父类指针释放子类对象时不干净的问题
-	//{
-	//	cout << "animal析构函数调用" << endl;
-	//}
-	virtual ~Animal() = 0;//纯虚析构必须有具体实现，上面虚析构也有具体实现
-	//有纯虚析构在是抽象类，无法实例化对象
-	virtual void speak() = 0;
+	virtual void calculator() = 0;
 };
-Animal::~Animal()
+class VideoCard
 {
-	cout << "animal纯虚析构函数调用" << endl;
-}
-class Cat :public Animal
+public:
+	virtual void display() = 0;
+};
+class Memory
 {
-public :
+public:
+	virtual void storage() = 0;
+};
+//电脑此类
+class Computer
+{
+public:
+	Computer(CPU* c, VideoCard* v, Memory* m)
+	{
+		m_cpu = c;
+		m_v = v;
+		m_m = m;
 
-	Cat(string name)
-	{
-		cout << "cat 构造函数调用" << endl;
-		m_name = new string(name);
-	}	
-	virtual void speak()
-	{
-		cout << *m_name<<" miao~" << endl;
 	}
-	~Cat()
+	//提供工作函数
+	void doWork()
 	{
-		if (m_name!=NULL)
+		m_cpu->calculator();
+		m_v->display();
+		m_m->storage();
+		
+	}
+	~Computer(){
+		if (m_cpu!=NULL)
 		{
-			cout << "cat析构" << endl;
-			m_name = NULL;
+			delete m_cpu;
+			m_cpu = NULL;
+		}
+		if (m_v!=NULL)
+		{
+			delete m_v;
+			m_v = NULL;
+		}
+		if (m_m!=NULL)
+		{
+			delete m_m;
+			m_m = NULL;
 		}
 	}
-	string* m_name;
+
+private:
+	CPU* m_cpu;
+	VideoCard* m_v;
+	Memory* m_m;
+
+	 
+};
+
+//零件商的零件
+class IntelCPU :public CPU
+{
+public:
+	virtual void calculator()
+	{
+		cout << "intelcpu" << endl;
+	}
+};
+class IntelVideoCard :public VideoCard
+{
+public:
+	virtual void display()
+	{
+		cout << "intel video card" << endl;
+	}
+};
+class IntelMemory :public Memory
+{
+public:
+	virtual void storage()
+	{
+		cout << "intel Memory" << endl;
+	}
+};
+class LenovoCPU :public CPU
+{
+public:
+	virtual void calculator()
+	{
+		cout << "lenovocpu" << endl;
+	}
+};
+class LenovoVideoCard :public VideoCard
+{
+public:
+	virtual void display()
+	{
+		cout << "lenovo video card" << endl;
+	}
+};
+class LenovoMemory :public Memory
+{
+	virtual void storage()
+	{
+		cout << "lenovo Memory" << endl;
+	}
 };
 void test01()
 {
-	Animal* animal = new Cat("tom");
-	animal->speak();
-	delete animal;
+	//第一台电脑的零件
+	CPU* intelCPU = new IntelCPU;
+	VideoCard* intelCard= new IntelVideoCard;
+	Memory* intelMem = new IntelMemory;
+	//创建第一台电脑
+	Computer* computer1 = new Computer(intelCPU, intelCard, intelMem);
+
+	//第二台电脑的零件
+	CPU* levonoCPU = new LenovoCPU;
+	VideoCard* levonovideocard = new LenovoVideoCard;
+	Memory* levonomem = new LenovoMemory;
+	//创建第二台电脑
+	Computer* computer2 = new Computer(levonoCPU, levonovideocard, levonomem);
+
+	//第三台电脑的零件
+	CPU* levonocpu1 = new LenovoCPU;
+	VideoCard* levonoCard1 = new LenovoVideoCard;
+	Memory* intelmemory1 = new IntelMemory;
+	Computer* computer3 = new Computer(levonocpu1, levonoCard1, intelmemory1);
+	computer1->doWork();
+	delete computer1;
+	computer2->doWork();
+	delete computer2;
+	computer3->doWork();
+	delete computer3;
+	
 }
 
 int main()
