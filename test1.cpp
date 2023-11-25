@@ -6,68 +6,34 @@ using namespace std;
 #include <string>
 #include<ctime>
 #include<fstream>
-//文本文件 写文件
-//1包含头文件
-//2创建流对象
-//
+class person
+{
+public:
+	char m_name[64];
+	int m_age;
+};
+
 void test01()
 {
-	ofstream ofs;
-	//3指定打开方式
-	ofs.open("text.txt", ios::out);
-
-	//4写内容
-	ofs << "姓名：张三" << endl;
-	ofs << "性别：男" << endl;
-	ofs << "年龄：19" << endl;
-
-	//关闭文件
-	ofs.close();
-}
-//文本操作 读文件
-void test02()
-{
-	//1包含头文件
-	//2创建流对象
-	ifstream ifs;
-	ifs.open("text.txt", ios::in);
-	//判断文件是否打开成功
+	/*ofstream ofs("person.txt", ios::out | ios::binary);
+	person p = { "张三",19 };
+	ofs.write((const char*)&p, sizeof(person));
+	ofs.close();*/
+	ifstream ifs("person.txt", ios::in | ios::binary);
 	if (!ifs.is_open())
 	{
 		cout << "文件打开失败" << endl;
 		return;
-	}
-	//4读数据几种方式
-	/*char buf[1024] = { 0 };
-	while (ifs>>buf)
-	{
-		cout << buf << endl;
-	}
-	ifs.close();*/
-	//第二种
-	//char buf[1024] = { 0 };
-	//while (ifs.getline(buf,sizeof(buf)))
-	//{
-	//	cout << buf << endl;
-	//}
 
-	//第三种
-	/*string buf;
-	while (getline(ifs,buf))
-	{
-		cout << buf << endl;
-	}*/
-	//第四种
-	char c;
-	while ((c=ifs.get())!=EOF)
-	{
-		cout << c;
 	}
+	person p;
+	ifs.read((char*)&p, sizeof(person));
+	cout << "姓名" << p.m_name << "年龄" << p.m_age << endl;
 	ifs.close();
+	
+
 }
 int main()
 {
-
 	test01();
-	test02();
 }
